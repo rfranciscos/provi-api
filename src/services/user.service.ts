@@ -1,3 +1,4 @@
+import { UserRequestDto, UserResponse } from '@dto';
 import { UserEntity } from '@entities';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -10,7 +11,7 @@ export class UserService {
     private readonly userRepository: UserRepository,
   ) {}
 
-  async create(input: any): Promise<any> {
+  async create(input: UserRequestDto): Promise<UserResponse> {
     const { password, email } = input;
     const userInDb = await this.userRepository.findOne({ where: { email } });
     if (userInDb) {
@@ -23,6 +24,6 @@ export class UserService {
     });
 
     await this.userRepository.save(user);
-    return user;
+    return { id: user.id, email: user.email, createdAt: user.createdAt };
   }
 }
