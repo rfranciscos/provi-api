@@ -1,9 +1,9 @@
 {
   "type": "postgres",
   "host": "localhost",
-  "port": 5432,
+  "port": 5433,
   "username": "postgres",
-  "password": "pronto",
+  "password": "AcrediteNoCodigo",
   "database": "postgres",
   "entities": ["entities/*.ts"],
   "migrationsTableName": "custom_migration_table",
