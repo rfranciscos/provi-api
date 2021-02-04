@@ -1,8 +1,15 @@
-import { UserRequestDto, UserResponse } from '@dto';
+import {
+  JwtPayload,
+  User,
+  UserCredentialsDto,
+  UserRequestDto,
+  UserResponse,
+} from '@dto';
 import { UserEntity } from '@entities';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserRepository } from '@repositories';
+import { validatePassword } from '@validators';
 
 @Injectable()
 export class UserService {
@@ -10,6 +17,29 @@ export class UserService {
     @InjectRepository(UserEntity)
     private readonly userRepository: UserRepository,
   ) {}
+
+  async findByPayload({ id }: JwtPayload): Promise<User> {
+    return await this.userRepository.findOne({ where: { id } });
+  }
+
+  async findByCredentials({
+    email,
+    password,
+  }: UserCredentialsDto): Promise<UserResponse> {
+    const user = await this.userRepository.findOne({ where: { email } });
+
+    if (!user) {
+      throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
+    }
+
+    const areEqual = await validatePassword(user.password, password);
+
+    if (!areEqual) {
+      throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
+    }
+
+    return { id: user.id, email: user.email };
+  }
 
   async create(input: UserRequestDto): Promise<UserResponse> {
     const { password, email } = input;

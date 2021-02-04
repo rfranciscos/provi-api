@@ -19,7 +19,8 @@
       "@repositories": ["src/repositories"],
       "@services": ["src/services"],
       "@config": ["src/config"],
-      "@dto": ["src/dto"]
+      "@dto": ["src/dto"],
+      "@validators": ["src/validators"]
     }
   }
 }

@@ -3,8 +3,8 @@ import { DynamicModule, Module } from '@nestjs/common';
 import { AppService } from '@services';
 import { ConnectionOptions, getMetadataArgsStorage } from 'typeorm';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserEntity } from '@entities';
 import { UserModule } from '@modules';
+import { AuthModule } from './auth.module';
 
 @Module({})
 export class AppModule {
@@ -13,11 +13,12 @@ export class AppModule {
       module: AppModule,
       controllers: [AppController],
       imports: [
+        AuthModule,
+        UserModule,
         TypeOrmModule.forRoot({
           ...connOptions,
           entities: getMetadataArgsStorage().tables.map((tbl) => tbl.target),
         }),
-        UserModule,
       ],
       providers: [AppService],
     };

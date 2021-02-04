@@ -15,5 +15,6 @@ module.exports = {
     '@services': '<rootDir>/src/services',
     '@config': '<rootDir>/src/config',
     '@dto': '<rootDir>/src/dto',
+    '@validators': '<rootDir>/src/validators',
   },
 };
