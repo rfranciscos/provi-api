@@ -5,10 +5,10 @@
   "username": "postgres",
   "password": "AcrediteNoCodigo",
   "database": "postgres",
-  "entities": ["entities/*.ts"],
+  "entities": ["src/entities/*.ts"],
   "migrationsTableName": "custom_migration_table",
-  "migrations": ["migrations/*.ts"],
+  "migrations": ["src/migrations/*.ts"],
   "cli": {
-    "migrationsDir": "migrations"
+    "migrationsDir": "src/migrations"
   }
 }
