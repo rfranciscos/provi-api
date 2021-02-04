@@ -4,6 +4,7 @@ import { AppService } from '@services';
 import { ConnectionOptions, getMetadataArgsStorage } from 'typeorm';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from '@entities';
+import { UserModule } from '@modules';
 
 @Module({})
 export class AppModule {
@@ -16,10 +17,9 @@ export class AppModule {
           ...connOptions,
           entities: getMetadataArgsStorage().tables.map((tbl) => tbl.target),
         }),
-        TypeOrmModule.forFeature([UserEntity]),
-        UserEntity,
+        UserModule,
       ],
-      providers: [AppService, UserEntity],
+      providers: [AppService],
     };
   }
 }
