@@ -14,5 +14,6 @@ module.exports = {
     '@repositories': '<rootDir>/src/repositories',
     '@services': '<rootDir>/src/services',
     '@config': '<rootDir>/src/config',
+    '@dto': '<rootDir>/src/dto',
   },
 };
