@@ -7,9 +7,9 @@ export const databaseConfig: ConnectionOptions = {
   username: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
-  entities: ['entities/*.ts'],
+  entities: ['../entities/*.ts'],
   migrationsTableName: 'custom_migration_table',
-  migrations: ['migrations/*.ts'],
+  migrations: ['../migrations/*.ts'],
   cli: {
     migrationsDir: 'migrations',
   },
