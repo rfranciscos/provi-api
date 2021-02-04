@@ -1,4 +1,5 @@
 import { Column, Entity, Unique } from 'typeorm';
+import { BaseDBEntity } from './baseDBEntity';
 
 @Entity('Address')
 @Unique('Address_userId_address_key', [
@@ -10,7 +11,7 @@ import { Column, Entity, Unique } from 'typeorm';
   'state',
   'cep',
 ])
-export class AddressEntity {
+export class AddressEntity extends BaseDBEntity {
   @Column({ type: 'uuid', nullable: false })
   userId!: string;
 
