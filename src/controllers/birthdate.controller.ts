@@ -1,4 +1,8 @@
-import { BirthdateResponseDto, BirthdayRequestDto, HttpResponse } from '@dto';
+import {
+  BirthdateResponseDto,
+  BirthdayRequestDto,
+  HttpResponseProtected,
+} from '@dto';
 import { Controller, Body, Post, Headers, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { BirthdateService } from '@services';
@@ -12,7 +16,7 @@ export class BirthdateController {
   public async insert(
     @Body() birthdateRequest: BirthdayRequestDto,
     @Headers() headers: any,
-  ): Promise<HttpResponse<BirthdateResponseDto[]>> {
+  ): Promise<HttpResponseProtected<BirthdateResponseDto[]>> {
     const response = await this.birthdateService.createOrUpdate(
       birthdateRequest,
       headers,
@@ -20,6 +24,7 @@ export class BirthdateController {
     return {
       sucess: true,
       message: 'sucess',
+      token: headers.authorization.split(' ')[1],
       data: response,
     };
   }

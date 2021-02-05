@@ -1,5 +1,3 @@
-import { from } from 'rxjs';
-
 export * from './userRequest.dto';
 export * from './user.interface';
 export * from './userCredentials.dto';
@@ -16,5 +14,5 @@ export * from './phoneNumberRequest.dto';
 export * from './phoneNumberResponse.dto';
 export * from './addressRequest.dto';
 export * from './addressResponse.dto';
-
 export * from './cepResponse.dto';
+export * from './httpResponseProtected.dto';

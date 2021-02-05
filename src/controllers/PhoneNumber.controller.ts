@@ -1,5 +1,5 @@
 import {
-  HttpResponse,
+  HttpResponseProtected,
   PhoneNumberRequestDto,
   PhoneNumberResponseDto,
 } from '@dto';
@@ -16,7 +16,7 @@ export class PhoneNumberController {
   public async insert(
     @Body() phoneNumberRequest: PhoneNumberRequestDto,
     @Headers() headers: any,
-  ): Promise<HttpResponse<PhoneNumberResponseDto[]>> {
+  ): Promise<HttpResponseProtected<PhoneNumberResponseDto[]>> {
     const response = await this.phoneNumberService.createOrUpdate(
       phoneNumberRequest,
       headers,
@@ -24,6 +24,7 @@ export class PhoneNumberController {
     return {
       sucess: true,
       message: 'sucess',
+      token: headers.authorization.split(' ')[1],
       data: response,
     };
   }

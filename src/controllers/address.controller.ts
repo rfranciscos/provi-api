@@ -1,4 +1,8 @@
-import { AddressRequestDto, AddressResponseDto, HttpResponse } from '@dto';
+import {
+  AddressRequestDto,
+  AddressResponseDto,
+  HttpResponseProtected,
+} from '@dto';
 import { Controller, Body, Post, Headers, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AddressService } from '@services';
@@ -12,7 +16,7 @@ export class AddressController {
   public async insert(
     @Body() addressRequest: AddressRequestDto,
     @Headers() headers: any,
-  ): Promise<HttpResponse<AddressResponseDto[]>> {
+  ): Promise<HttpResponseProtected<AddressResponseDto[]>> {
     const response = await this.addressService.createOrUpdate(
       addressRequest,
       headers,
@@ -20,6 +24,7 @@ export class AddressController {
     return {
       sucess: true,
       message: 'sucess',
+      token: headers.authorization.split(' ')[1],
       data: response,
     };
   }

@@ -1,4 +1,4 @@
-import { CpfRequestDto, CpfResponseDto, HttpResponse } from '@dto';
+import { CpfRequestDto, CpfResponseDto, HttpResponseProtected } from '@dto';
 import { Controller, Body, Post, Headers, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { CpfService } from '@services';
@@ -12,11 +12,12 @@ export class CpfController {
   public async insert(
     @Body() cpfRequest: CpfRequestDto,
     @Headers() headers: any,
-  ): Promise<HttpResponse<CpfResponseDto[]>> {
+  ): Promise<HttpResponseProtected<CpfResponseDto[]>> {
     const response = await this.cpfService.createOrUpdate(cpfRequest, headers);
     return {
       sucess: true,
       message: 'sucess',
+      token: headers.authorization.split(' ')[1],
       data: response,
     };
   }

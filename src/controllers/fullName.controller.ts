@@ -1,4 +1,8 @@
-import { FullNameRequestDto, FullNameResponseDto, HttpResponse } from '@dto';
+import {
+  FullNameRequestDto,
+  FullNameResponseDto,
+  HttpResponseProtected,
+} from '@dto';
 import { Controller, Body, Post, Headers, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { FullNameService } from 'src/services/fullName.service';
@@ -12,7 +16,7 @@ export class FullNameController {
   public async insert(
     @Body() fullNameRequest: FullNameRequestDto,
     @Headers() headers: any,
-  ): Promise<HttpResponse<FullNameResponseDto[]>> {
+  ): Promise<HttpResponseProtected<FullNameResponseDto[]>> {
     const response = await this.fullNameService.createOrUpdate(
       fullNameRequest,
       headers,
@@ -20,6 +24,7 @@ export class FullNameController {
     return {
       sucess: true,
       message: 'sucess',
+      token: headers.authorization.split(' ')[1],
       data: response,
     };
   }
