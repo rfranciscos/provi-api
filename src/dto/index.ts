@@ -4,3 +4,5 @@ export * from './userCredentials.dto';
 export * from './jwtToken.interface';
 export * from './jwtPayload.interface';
 export * from './httpResponse.dto';
+export * from './cpfRequest.dto';
+export * from './cpfResponse.dto';
