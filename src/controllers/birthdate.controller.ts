@@ -12,7 +12,7 @@ export class BirthdateController {
   public async insert(
     @Body() birthdateRequest: BirthdayRequestDto,
     @Headers() headers: any,
-  ): Promise<HttpResponse<BirthdateResponseDto>> {
+  ): Promise<HttpResponse<BirthdateResponseDto[]>> {
     const response = await this.birthdateService.createOrUpdate(
       birthdateRequest,
       headers,
