@@ -6,3 +6,5 @@ export * from './jwtPayload.interface';
 export * from './httpResponse.dto';
 export * from './cpfRequest.dto';
 export * from './cpfResponse.dto';
+export * from './fullNameRequest.dto';
+export * from './fullNameResponse.dto';

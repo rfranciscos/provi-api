@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from '@modules';
 import { AuthModule } from './auth.module';
 import { CpfModule } from './cpf.module';
+import { FullNameModule } from './fullName.module';
 
 @Module({})
 export class AppModule {
@@ -17,6 +18,7 @@ export class AppModule {
         AuthModule,
         UserModule,
         CpfModule,
+        FullNameModule,
         TypeOrmModule.forRoot({
           ...connOptions,
           entities: getMetadataArgsStorage().tables.map((tbl) => tbl.target),
