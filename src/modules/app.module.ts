@@ -1,4 +1,3 @@
-import { AppController } from '@controllers';
 import { DynamicModule, Module } from '@nestjs/common';
 import { AppService } from '@services';
 import { ConnectionOptions, getMetadataArgsStorage } from 'typeorm';
@@ -17,7 +16,6 @@ export class AppModule {
   static forRoot(connOptions: ConnectionOptions): DynamicModule {
     return {
       module: AppModule,
-      controllers: [AppController],
       imports: [
         AuthModule,
         UserModule,
