@@ -2,26 +2,26 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
 
 export class AddressRequestDto {
-  @ApiProperty()
+  @ApiProperty({ type: 'string', example: 'Avenida do João' })
   @IsNotEmpty()
   street: string;
 
-  @ApiProperty()
+  @ApiProperty({ type: 'string', example: '1000' })
   @IsNotEmpty()
   number: string;
 
-  @ApiProperty()
-  complement: string;
+  @ApiProperty({ required: false, type: 'string', example: 'Fundos' })
+  complement?: string;
 
-  @ApiProperty()
+  @ApiProperty({ type: 'string', example: 'São Paulo' })
   @IsNotEmpty()
   city: string;
 
-  @ApiProperty()
+  @ApiProperty({ type: 'string', example: 'SP' })
   @IsNotEmpty()
   state: string;
 
-  @ApiProperty()
+  @ApiProperty({ type: 'string', example: '03323000' })
   @IsNotEmpty()
   cep: string;
 }
