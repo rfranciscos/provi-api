@@ -7,6 +7,7 @@ import { UserModule } from '@modules';
 import { AuthModule } from './auth.module';
 import { CpfModule } from './cpf.module';
 import { FullNameModule } from './fullName.module';
+import { BirthdateModule } from './birthdate.module';
 
 @Module({})
 export class AppModule {
@@ -19,6 +20,7 @@ export class AppModule {
         UserModule,
         CpfModule,
         FullNameModule,
+        BirthdateModule,
         TypeOrmModule.forRoot({
           ...connOptions,
           entities: getMetadataArgsStorage().tables.map((tbl) => tbl.target),

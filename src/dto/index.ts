@@ -8,3 +8,5 @@ export * from './cpfRequest.dto';
 export * from './cpfResponse.dto';
 export * from './fullNameRequest.dto';
 export * from './fullNameResponse.dto';
+export * from './birthdateRequest.dto';
+export * from './birthdateResponse.dto';
