@@ -12,7 +12,7 @@ export class CpfController {
   public async insert(
     @Body() cpfRequest: CpfRequestDto,
     @Headers() headers: any,
-  ): Promise<HttpResponse<CpfResponseDto>> {
+  ): Promise<HttpResponse<CpfResponseDto[]>> {
     const response = await this.cpfService.createOrUpdate(cpfRequest, headers);
     return {
       sucess: true,
