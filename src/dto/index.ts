@@ -14,3 +14,7 @@ export * from './birthdateRequest.dto';
 export * from './birthdateResponse.dto';
 export * from './phoneNumberRequest.dto';
 export * from './phoneNumberResponse.dto';
+export * from './addressRequest.dto';
+export * from './addressResponse.dto';
+
+export * from './cepResponse.dto';
