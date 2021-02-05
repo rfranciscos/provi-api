@@ -10,7 +10,6 @@ export class AuthController {
   public async signup(
     @Body() userRequest: UserRequestDto,
   ): Promise<HttpResponse<JwtToken>> {
-    console.log(userRequest);
     const token = await this.authService.createUser(userRequest);
 
     return {

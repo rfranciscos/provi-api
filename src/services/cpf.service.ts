@@ -19,8 +19,6 @@ export class CpfService {
     cpf: string,
     token: string,
   ): Promise<CpfResponseDto> {
-    console.log(userId);
-
     const newCpf = this.cpfRepo.create({ userId, value: cpf });
     await this.cpfRepo.save(newCpf);
 
