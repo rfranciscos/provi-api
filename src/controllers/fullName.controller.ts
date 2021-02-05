@@ -12,7 +12,7 @@ export class FullNameController {
   public async insert(
     @Body() fullNameRequest: FullNameRequestDto,
     @Headers() headers: any,
-  ): Promise<HttpResponse<FullNameResponseDto>> {
+  ): Promise<HttpResponse<FullNameResponseDto[]>> {
     const response = await this.fullNameService.createOrUpdate(
       fullNameRequest,
       headers,
