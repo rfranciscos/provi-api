@@ -6,3 +6,4 @@ export * from './fullName.module';
 export * from './birthdate.module';
 export * from './PhoneNumber.module';
 export * from './address.module';
+export * from './jwtStrategy.module';
