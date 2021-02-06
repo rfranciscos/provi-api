@@ -1,9 +1,10 @@
 import { BirthdateResponseDto, BirthdayRequestDto } from '@dto';
 import { BirthdateEntity } from '@entities';
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BirthdateRepository } from '@repositories';
+import { validadeBirthdate } from '@validators';
 
 @Injectable()
 export class BirthdateService {
@@ -39,6 +40,9 @@ export class BirthdateService {
     { value }: BirthdayRequestDto,
     { authorization }: { authorization: string },
   ): Promise<BirthdateResponseDto[]> {
+    if (!validadeBirthdate(value)) {
+      throw new HttpException('Invalid birthdate', HttpStatus.BAD_REQUEST);
+    }
     const token = authorization.split(' ')[1];
     const data = await this.jwtService.verifyAsync(token);
     const response = await this.birthdateRepository.findOne({
@@ -49,7 +53,7 @@ export class BirthdateService {
     if (response) {
       return await this.update(response.id);
     } else {
-      await this.create(data.id, value);
+      await this.create(data.id, new Date(value));
       const array = await this.birthdateRepository.find({
         userId: data.id,
       });

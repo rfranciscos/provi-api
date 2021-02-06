@@ -1,9 +1,10 @@
 import { PhoneNumberRequestDto, PhoneNumberResponseDto } from '@dto';
 import { PhoneNumberEntity } from '@entities';
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { validadePhoneNumber } from '../validators';
 
 @Injectable()
 export class PhoneNumberService {
@@ -44,6 +45,9 @@ export class PhoneNumberService {
     { value }: PhoneNumberRequestDto,
     { authorization }: { authorization: string },
   ): Promise<PhoneNumberResponseDto[]> {
+    if (!validadePhoneNumber(value)) {
+      throw new HttpException('Invalid phone number', HttpStatus.BAD_REQUEST);
+    }
     const token = authorization.split(' ')[1];
     const data = await this.jwtService.verifyAsync(token);
     const response = await this.phoneNumberRepo.findOne({
