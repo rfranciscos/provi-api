@@ -4,3 +4,4 @@ export * from './fullName.controller';
 export * from './birthdate.controller';
 export * from './PhoneNumber.controller';
 export * from './address.controller';
+export * from './AmoutRequested.controller';

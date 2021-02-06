@@ -10,6 +10,7 @@ import { BirthdateModule } from './birthdate.module';
 import { PhoneNumberModule } from './PhoneNumber.module';
 import { CepModule } from './CEP.module';
 import { AddressModule } from './address.module';
+import { AmountRequestedModule } from './amountRequested.module';
 
 @Module({})
 export class AppModule {
@@ -25,6 +26,7 @@ export class AppModule {
         PhoneNumberModule,
         AddressModule,
         CepModule,
+        AmountRequestedModule,
         TypeOrmModule.forRoot({
           ...connOptions,
           entities: getMetadataArgsStorage().tables.map((tbl) => tbl.target),
