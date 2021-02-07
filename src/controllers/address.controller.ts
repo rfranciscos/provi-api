@@ -31,10 +31,8 @@ export class AddressController {
     );
 
     return {
-      sucess: true,
       message: 'sucess',
       'next-end-point': nextPath,
-      token: headers.authorization.split(' ')[1],
       data: response,
     };
   }

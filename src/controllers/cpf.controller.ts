@@ -21,10 +21,8 @@ export class CpfController {
     const nextPath = await this.authService.updatePaths(headers, '/api/v1/cpf');
 
     return {
-      sucess: true,
       message: 'sucess',
       'next-end-point': nextPath,
-      token: headers.authorization.split(' ')[1],
       data: response,
     };
   }
