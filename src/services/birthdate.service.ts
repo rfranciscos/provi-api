@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { BirthdateResponseDto, BirthdayRequestDto } from '@dto';
 import { BirthdateEntity, UserEntity } from '@entities';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
@@ -18,7 +19,8 @@ export class BirthdateService {
 
   async create(user: UserEntity, value: Date): Promise<BirthdateResponseDto> {
     const data = this.birthdateRepository.create({ user, value });
-    return await this.birthdateRepository.save(data);
+    const { id, user: _, ...rest } = await this.birthdateRepository.save(data);
+    return rest;
   }
 
   async update(idBirthday: string): Promise<any> {
@@ -26,9 +28,10 @@ export class BirthdateService {
       { id: idBirthday },
       { updatedAt: new Date() },
     );
-    return await this.birthdateRepository.findOne({
+    const { id, user: _, ...rest } = await this.birthdateRepository.findOne({
       id: idBirthday,
     });
+    return rest;
   }
 
   async createOrUpdate({

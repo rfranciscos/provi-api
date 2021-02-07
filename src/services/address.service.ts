@@ -24,14 +24,17 @@ export class AddressService {
     address: Address,
   ): Promise<AddressResponseDto> {
     const newAddress = this.addressRepo.create({ user, ...address });
-    return this.addressRepo.save(newAddress);
+    const { id, user: _, ...rest } = await this.addressRepo.save(newAddress);
+    return rest;
   }
 
   async update(idAddress: string): Promise<AddressResponseDto> {
     await this.addressRepo.update({ id: idAddress }, { updatedAt: new Date() });
-    return await this.addressRepo.findOne({
+    const { id, user: _, ...rest } = await this.addressRepo.findOne({
       id: idAddress,
     });
+
+    return rest;
   }
 
   async createOrUpdate(input: AddressRequestDto): Promise<AddressResponseDto> {

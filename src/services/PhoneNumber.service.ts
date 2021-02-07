@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { PhoneNumberRequestDto, PhoneNumberResponseDto } from '@dto';
 import { PhoneNumberEntity, UserEntity } from '@entities';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
@@ -21,7 +22,8 @@ export class PhoneNumberService {
     value: string,
   ): Promise<PhoneNumberResponseDto> {
     const data = this.phoneNumberRepo.create({ user, value });
-    return this.phoneNumberRepo.save(data);
+    const { id, user: _, ...rest } = await this.phoneNumberRepo.save(data);
+    return rest;
   }
 
   async update(idPhoneNumber: string): Promise<PhoneNumberResponseDto> {
@@ -29,9 +31,10 @@ export class PhoneNumberService {
       { id: idPhoneNumber },
       { updatedAt: new Date() },
     );
-    return this.phoneNumberRepo.findOne({
+    const { id, user: _, ...rest } = await this.phoneNumberRepo.findOne({
       id: idPhoneNumber,
     });
+    return rest;
   }
 
   async createOrUpdate({

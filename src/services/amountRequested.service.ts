@@ -25,12 +25,11 @@ export class AmountRequestedService {
       user,
       value,
     });
-    await this.amountRequestedRepository.save(data);
+    const { id, user: _, ...rest } = await this.amountRequestedRepository.save(
+      data,
+    );
 
-    return {
-      createdAt: data.createdAt,
-      value: data.value,
-    };
+    return rest;
   }
 
   async update(idAmountRequested: string): Promise<any> {
@@ -38,11 +37,15 @@ export class AmountRequestedService {
       { id: idAmountRequested },
       { updatedAt: new Date() },
     );
-    const { updatedAt, value } = await this.amountRequestedRepository.findOne({
+    const {
+      id,
+      user: _,
+      ...rest
+    } = await this.amountRequestedRepository.findOne({
       id: idAmountRequested,
     });
 
-    return { value, updatedAt };
+    return rest;
   }
 
   async createOrUpdate({

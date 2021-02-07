@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { FullNameRequestDto, FullNameResponseDto } from '@dto';
 import { FullNameEntity, UserEntity } from '@entities';
 import { Injectable } from '@nestjs/common';
@@ -25,7 +26,8 @@ export class FullNameService {
       firstName,
       lastName,
     });
-    return this.fullNameRepository.save(data);
+    const { id, user: _, ...rest } = await this.fullNameRepository.save(data);
+    return rest;
   }
 
   async update(idFullName: string): Promise<FullNameResponseDto> {
@@ -33,9 +35,10 @@ export class FullNameService {
       { id: idFullName },
       { updatedAt: new Date() },
     );
-    return this.fullNameRepository.findOne({
+    const { id, user: _, ...rest } = await this.fullNameRepository.findOne({
       id: idFullName,
     });
+    return rest;
   }
 
   async createOrUpdate({

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { CpfRequestDto, CpfResponseDto } from '@dto';
 import { CPFEntity, UserEntity } from '@entities';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
@@ -18,14 +19,16 @@ export class CpfService {
 
   async create(user: UserEntity, cpf: string): Promise<CpfResponseDto> {
     const newCpf = this.cpfRepository.create({ user, value: cpf });
-    return await this.cpfRepository.save(newCpf);
+    const { id, user: _, ...rest } = await this.cpfRepository.save(newCpf);
+    return rest;
   }
 
   async update(idCpf: string): Promise<CpfResponseDto> {
     await this.cpfRepository.update({ id: idCpf }, { updatedAt: new Date() });
-    return this.cpfRepository.findOne({
+    const { id, user: _, ...rest } = await this.cpfRepository.findOne({
       id: idCpf,
     });
+    return rest;
   }
 
   async createOrUpdate({
