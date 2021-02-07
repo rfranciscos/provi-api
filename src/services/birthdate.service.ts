@@ -39,14 +39,13 @@ export class BirthdateService {
     return { value, updatedAt };
   }
 
-  async createOrUpdate(
-    { value }: BirthdayRequestDto,
-    { authorization }: { authorization: string },
-  ): Promise<BirthdateResponseDto[]> {
+  async createOrUpdate({
+    value,
+    token,
+  }: BirthdayRequestDto): Promise<BirthdateResponseDto[]> {
     if (!validadeBirthdate(value)) {
       throw new HttpException('Invalid birthdate', HttpStatus.BAD_REQUEST);
     }
-    const token = authorization.split(' ')[1];
     const data = await this.jwtService.verifyAsync(token);
     const user = await this.userRepository.findOneOrFail({ id: data.id });
     const response = await this.birthdateRepository.findOne({

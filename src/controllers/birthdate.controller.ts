@@ -3,7 +3,7 @@ import {
   BirthdayRequestDto,
   HttpResponseProtected,
 } from '@dto';
-import { Controller, Body, Post, Headers, UseGuards } from '@nestjs/common';
+import { Controller, Body, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService, BirthdateService } from '@services';
 
@@ -18,15 +18,16 @@ export class BirthdateController {
   @Post()
   public async insert(
     @Body() birthdateRequest: BirthdayRequestDto,
-    @Headers() headers: any,
   ): Promise<HttpResponseProtected<BirthdateResponseDto[]>> {
-    await this.authService.getUserPath(headers, '/api/v1/birthdate');
+    await this.authService.getUserPath(
+      birthdateRequest.token,
+      '/api/v1/birthdate',
+    );
     const response = await this.birthdateService.createOrUpdate(
       birthdateRequest,
-      headers,
     );
     const nextPath = await this.authService.updatePaths(
-      headers,
+      birthdateRequest.token,
       '/api/v1/birthdate',
     );
     return {
