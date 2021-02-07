@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { AmountRequestedDto } from '@dto';
+import { AmountRequestedDto, AmountRequestedResponseDto } from '@dto';
 import { AmountRequestedEntity } from '@entities';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -14,7 +14,10 @@ export class AmountRequestedService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async create(userId: string, value: number): Promise<AmountRequestedDto> {
+  async create(
+    userId: string,
+    value: number,
+  ): Promise<AmountRequestedResponseDto> {
     const newAmountRequested = this.amountRequestedRepository.create({
       userId,
       value,
@@ -39,11 +42,10 @@ export class AmountRequestedService {
     return { value, updatedAt };
   }
 
-  async createOrUpdate(
-    { value }: AmountRequestedDto,
-    { authorization }: { authorization: string },
-  ): Promise<AmountRequestedDto[]> {
-    const token = authorization.split(' ')[1];
+  async createOrUpdate({
+    value,
+    token,
+  }: AmountRequestedDto): Promise<AmountRequestedResponseDto[]> {
     const data = await this.jwtService.verifyAsync(token);
     const response = await this.amountRequestedRepository.findOne({
       userId: data.id,

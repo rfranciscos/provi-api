@@ -1,5 +1,9 @@
-import { AmountRequestedDto, HttpResponseProtected } from '@dto';
-import { Controller, Body, Post, Headers, UseGuards } from '@nestjs/common';
+import {
+  AmountRequestedDto,
+  AmountRequestedResponseDto,
+  HttpResponseProtected,
+} from '@dto';
+import { Controller, Body, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AmountRequestedService, AuthService } from '@services';
 
@@ -14,15 +18,16 @@ export class AmountRequestedController {
   @Post()
   public async insert(
     @Body() amountRequestedRequest: AmountRequestedDto,
-    @Headers() headers: any,
-  ): Promise<HttpResponseProtected<AmountRequestedDto[]>> {
-    await this.authService.getUserPath(headers, '/api/v1/amount-requested');
+  ): Promise<HttpResponseProtected<AmountRequestedResponseDto[]>> {
+    await this.authService.getUserPath(
+      amountRequestedRequest.token,
+      '/api/v1/amount-requested',
+    );
     const response = await this.amountRequested.createOrUpdate(
       amountRequestedRequest,
-      headers,
     );
     const nextPath = await this.authService.updatePaths(
-      headers,
+      amountRequestedRequest.token,
       '/api/v1/amount-requested',
     );
 
