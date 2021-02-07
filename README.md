@@ -32,6 +32,16 @@
 $ npm install
 ```
 
+## Setup
+
+```bash
+# setup do banco
+$ npm run db:setup // necessário ter o docker instalado
+
+# aplicar migrations
+$ npm run migration:run
+```
+
 ## Running the app
 
 ```bash

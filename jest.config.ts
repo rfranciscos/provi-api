@@ -16,5 +16,7 @@ module.exports = {
     '@config': '<rootDir>/src/config',
     '@dto': '<rootDir>/src/dto',
     '@validators': '<rootDir>/src/validators',
+    '@helpers': '<rootDir>/src/helpers',
+    'src/jwt/jwt.strategy': '<rootDir>/src/jwt/jwt.strategy',
   },
 };
