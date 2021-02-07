@@ -6,6 +6,7 @@ import { PhoneNumberEntity } from './phoneNumber.entity';
 import { FullNameEntity } from './fullName.entity';
 import { BirthdateEntity } from './birthdate.entity';
 import { AddressEntity } from './address.entity';
+import { UserPathEntity } from './userPath.entity';
 
 @Entity('User')
 export class UserEntity extends BaseDBEntity {
@@ -29,6 +30,9 @@ export class UserEntity extends BaseDBEntity {
 
   @OneToMany(() => AddressEntity, (address) => address.user)
   addresses: BirthdateEntity[];
+
+  @OneToMany(() => UserPathEntity, (path) => path.user)
+  paths: UserPathEntity[];
 
   @BeforeInsert()
   async hashPassword() {

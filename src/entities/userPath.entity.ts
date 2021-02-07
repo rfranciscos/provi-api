@@ -1,15 +1,17 @@
-import { Entity, Column, Unique } from 'typeorm';
+import { Entity, Column, Unique, ManyToOne, JoinColumn } from 'typeorm';
 import { BaseDBEntity } from './baseDBEntity';
+import { UserEntity } from './user.entity';
 
 @Entity('UserPath')
-@Unique('UserPath_userId_path_key', ['userId', 'path'])
+@Unique('UserPath_userId_path_key', ['user', 'path'])
 export class UserPathEntity extends BaseDBEntity {
-  @Column({ type: 'uuid', nullable: false })
-  userId!: string;
+  @ManyToOne(() => UserEntity, (user) => user)
+  @JoinColumn({ name: 'userId' })
+  user: UserEntity;
 
   @Column({ type: 'text', nullable: false })
-  path!: string;
+  path: string;
 
   @Column({ type: 'text', nullable: false })
-  nextPath!: string;
+  nextPath: string;
 }
