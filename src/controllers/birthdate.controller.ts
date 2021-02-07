@@ -16,7 +16,7 @@ export class BirthdateController {
   @Post()
   public async insert(
     @Body() birthdateRequest: BirthdayRequestDto,
-  ): Promise<HttpResponseProtected<BirthdateResponseDto[]>> {
+  ): Promise<HttpResponseProtected<BirthdateResponseDto>> {
     await this.authService.getUserPath(
       birthdateRequest.token,
       '/api/v1/birthdate',
