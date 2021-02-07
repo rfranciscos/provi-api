@@ -17,37 +17,27 @@ export class PhoneNumberService {
   ) {}
 
   async create(
-    userId: string,
+    user: UserEntity,
     value: string,
-    token: string,
   ): Promise<PhoneNumberResponseDto> {
-    const user = await this.userRepository.findOneOrFail({ id: userId });
     const data = this.phoneNumberRepo.create({ user, value });
-    await this.phoneNumberRepo.save(data);
-
-    return {
-      token,
-      value,
-      createdAt: data.createdAt,
-    };
+    return this.phoneNumberRepo.save(data);
   }
 
-  async update(idPhoneNumber: string): Promise<any> {
+  async update(idPhoneNumber: string): Promise<PhoneNumberResponseDto> {
     await this.phoneNumberRepo.update(
       { id: idPhoneNumber },
       { updatedAt: new Date() },
     );
-    const { value, updatedAt } = await this.phoneNumberRepo.findOne({
+    return this.phoneNumberRepo.findOne({
       id: idPhoneNumber,
     });
-
-    return { value, updatedAt };
   }
 
   async createOrUpdate({
     value,
     token,
-  }: PhoneNumberRequestDto): Promise<PhoneNumberResponseDto[]> {
+  }: PhoneNumberRequestDto): Promise<PhoneNumberResponseDto> {
     if (!validadePhoneNumber(value)) {
       throw new HttpException('Invalid phone number', HttpStatus.BAD_REQUEST);
     }
@@ -61,17 +51,7 @@ export class PhoneNumberService {
     if (response) {
       return await this.update(response.id);
     } else {
-      await this.create(data.id, value, token);
-      const array = await this.phoneNumberRepo.find({
-        user,
-      });
-      return array.map(({ value, createdAt, updatedAt }) => {
-        return {
-          value,
-          createdAt,
-          updatedAt,
-        };
-      });
+      return this.create(user, value);
     }
   }
 }

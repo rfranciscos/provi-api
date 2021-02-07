@@ -16,7 +16,7 @@ export class PhoneNumberController {
   @Post()
   public async insert(
     @Body() phoneNumberRequest: PhoneNumberRequestDto,
-  ): Promise<HttpResponseProtected<PhoneNumberResponseDto[]>> {
+  ): Promise<HttpResponseProtected<PhoneNumberResponseDto>> {
     await this.authService.getUserPath(
       phoneNumberRequest.token,
       '/api/v1/phone-number',
