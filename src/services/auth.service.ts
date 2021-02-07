@@ -48,4 +48,27 @@ export class AuthService {
       token,
     };
   }
+
+  async getUserPath(headers: any, currentPath: string): Promise<void> {
+    const token = headers.authorization.split(' ')[1];
+    const data = await this.jwtService.verifyAsync(token);
+    const paths = await this.usersService.getPaths(data.id);
+    paths.sort(
+      (a, b) =>
+        new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime(),
+    );
+    if (paths[0].nextPath !== currentPath) {
+      throw new HttpException(
+        `Invalid endPoint - ${paths[0].nextPath}`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+
+  async updatePaths(headers: any, currentPath: string) {
+    const token = headers.authorization.split(' ')[1];
+    const data = await this.jwtService.verifyAsync(token);
+    const path = await this.usersService.updatePath(currentPath, data.id);
+    return path;
+  }
 }

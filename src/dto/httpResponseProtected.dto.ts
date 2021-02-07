@@ -8,6 +8,9 @@ export class HttpResponseProtected<T> {
   message: string;
 
   @ApiProperty()
+  'next-end-point': string;
+
+  @ApiProperty()
   token: string;
 
   @ApiProperty()

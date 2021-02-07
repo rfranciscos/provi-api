@@ -27,7 +27,6 @@ export class FullNameService {
       lastName,
     });
     await this.fullNameRepository.save(data);
-
     return {
       firstName: data.firstName,
       lastName: data.lastName,

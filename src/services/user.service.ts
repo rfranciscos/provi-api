@@ -63,4 +63,19 @@ export class UserService {
 
     return { id: user.id, email: user.email, createdAt: user.createdAt };
   }
+
+  async getPaths(userId: string) {
+    const user = await this.userRepository.findOneOrFail({ id: userId });
+    return await this.userPathRepository.find({ user });
+  }
+
+  async updatePath(path: string, userId: string): Promise<string> {
+    const user = await this.userRepository.findOneOrFail({ id: userId });
+    const pathh = await this.userPathRepository.findOneOrFail({ user, path });
+    await this.userPathRepository.update(
+      { id: pathh.id },
+      { updatedAt: new Date() },
+    );
+    return pathh.nextPath;
+  }
 }
