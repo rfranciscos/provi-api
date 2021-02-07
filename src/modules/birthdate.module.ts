@@ -1,5 +1,5 @@
 import { BirthdateController } from '@controllers';
-import { BirthdateEntity } from '@entities';
+import { BirthdateEntity, UserEntity } from '@entities';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BirthdateService } from '@services';
@@ -10,7 +10,7 @@ import { UserModule } from './user.module';
   imports: [
     UserModule,
     AuthModule,
-    TypeOrmModule.forFeature([BirthdateEntity]),
+    TypeOrmModule.forFeature([BirthdateEntity, UserEntity]),
   ],
   controllers: [BirthdateController],
   providers: [BirthdateService],

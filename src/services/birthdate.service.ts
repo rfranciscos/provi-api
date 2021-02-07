@@ -1,9 +1,9 @@
 import { BirthdateResponseDto, BirthdayRequestDto } from '@dto';
-import { BirthdateEntity } from '@entities';
+import { BirthdateEntity, UserEntity } from '@entities';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
-import { BirthdateRepository } from '@repositories';
+import { BirthdateRepository, UserRepository } from '@repositories';
 import { validadeBirthdate } from '@validators';
 
 @Injectable()
@@ -11,11 +11,14 @@ export class BirthdateService {
   constructor(
     @InjectRepository(BirthdateEntity)
     private readonly birthdateRepository: BirthdateRepository,
+    @InjectRepository(UserEntity)
+    private readonly userRepository: UserRepository,
     private readonly jwtService: JwtService,
   ) {}
 
   async create(userId: string, value: Date): Promise<BirthdateResponseDto> {
-    const data = this.birthdateRepository.create({ userId, value });
+    const user = await this.userRepository.findOneOrFail({ id: userId });
+    const data = this.birthdateRepository.create({ user, value });
     await this.birthdateRepository.save(data);
 
     return {
@@ -45,8 +48,9 @@ export class BirthdateService {
     }
     const token = authorization.split(' ')[1];
     const data = await this.jwtService.verifyAsync(token);
+    const user = await this.userRepository.findOneOrFail({ id: data.id });
     const response = await this.birthdateRepository.findOne({
-      userId: data.id,
+      user,
       value,
     });
 
@@ -55,7 +59,7 @@ export class BirthdateService {
     } else {
       await this.create(data.id, new Date(value));
       const array = await this.birthdateRepository.find({
-        userId: data.id,
+        user,
       });
       return array.map(({ value, createdAt, updatedAt }) => {
         return {

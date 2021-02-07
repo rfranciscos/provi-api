@@ -1,11 +1,13 @@
-import { Column, Entity, Unique } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, Unique } from 'typeorm';
 import { BaseDBEntity } from './baseDBEntity';
+import { UserEntity } from './user.entity';
 
 @Entity('Birthdate')
-@Unique('Birthdate_userId_value_key', ['userId', 'value'])
+@Unique('Birthdate_userId_value_key', ['user', 'value'])
 export class BirthdateEntity extends BaseDBEntity {
-  @Column({ type: 'uuid', nullable: false })
-  userId!: string;
+  @ManyToOne(() => UserEntity, (user) => user)
+  @JoinColumn({ name: 'userId' })
+  user: UserEntity;
 
   @Column({ type: 'date', nullable: false })
   value!: Date;
