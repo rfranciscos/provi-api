@@ -1,6 +1,7 @@
 import { HttpResponse, JwtToken, UserRequestDto } from '@dto';
-import { Controller, Body, Post } from '@nestjs/common';
+import { Controller, Body, Post, Request } from '@nestjs/common';
 import { AuthService } from '@services';
+import { getRouterList } from 'src/helpers';
 
 @Controller('api/v1/auth')
 export class AuthController {
@@ -9,8 +10,10 @@ export class AuthController {
   @Post('signup')
   public async signup(
     @Body() userRequest: UserRequestDto,
+    @Request() req,
   ): Promise<HttpResponse<JwtToken>> {
-    const token = await this.authService.createUser(userRequest);
+    const paths = getRouterList(req);
+    const token = await this.authService.createUser(userRequest, paths);
 
     return {
       sucess: true,

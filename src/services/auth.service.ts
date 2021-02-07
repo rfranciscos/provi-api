@@ -7,6 +7,7 @@ import {
 } from '@dto';
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { RouterList } from 'src/helpers';
 import { UserService } from './user.service';
 
 @Injectable()
@@ -16,8 +17,11 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async createUser(userRequest: UserCredentialsDto): Promise<JwtToken> {
-    const user = await this.usersService.create(userRequest);
+  async createUser(
+    userRequest: UserCredentialsDto,
+    paths: RouterList[],
+  ): Promise<JwtToken> {
+    const user = await this.usersService.create({ ...userRequest, paths });
     return this.createToken(user);
   }
 
