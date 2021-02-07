@@ -3,8 +3,7 @@ import {
   AddressResponseDto,
   HttpResponseProtected,
 } from '@dto';
-import { Controller, Body, Post, UseGuards } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
+import { Controller, Body, Post } from '@nestjs/common';
 import { AddressService, AuthService } from '@services';
 
 @Controller('api/v1/address')
@@ -14,7 +13,6 @@ export class AddressController {
     private readonly authService: AuthService,
   ) {}
 
-  @UseGuards(AuthGuard())
   @Post()
   public async insert(
     @Body() addressRequest: AddressRequestDto,

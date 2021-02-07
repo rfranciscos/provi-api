@@ -1,6 +1,5 @@
 import { CpfRequestDto, CpfResponseDto, HttpResponseProtected } from '@dto';
-import { Controller, Body, Post, Headers, UseGuards } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
+import { Controller, Body, Post, Headers } from '@nestjs/common';
 import { AuthService, CpfService } from '@services';
 
 @Controller('api/v1/cpf')
@@ -10,7 +9,6 @@ export class CpfController {
     private readonly authService: AuthService,
   ) {}
 
-  @UseGuards(AuthGuard())
   @Post()
   public async insert(
     @Body() cpfRequest: CpfRequestDto,

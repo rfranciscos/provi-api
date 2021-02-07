@@ -3,8 +3,7 @@ import {
   PhoneNumberRequestDto,
   PhoneNumberResponseDto,
 } from '@dto';
-import { Controller, Body, Post, UseGuards } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
+import { Controller, Body, Post } from '@nestjs/common';
 import { AuthService, PhoneNumberService } from '@services';
 
 @Controller('api/v1/phone-number')
@@ -14,7 +13,6 @@ export class PhoneNumberController {
     private readonly authService: AuthService,
   ) {}
 
-  @UseGuards(AuthGuard())
   @Post()
   public async insert(
     @Body() phoneNumberRequest: PhoneNumberRequestDto,

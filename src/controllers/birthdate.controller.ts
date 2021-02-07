@@ -3,8 +3,7 @@ import {
   BirthdayRequestDto,
   HttpResponseProtected,
 } from '@dto';
-import { Controller, Body, Post, UseGuards } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
+import { Controller, Body, Post } from '@nestjs/common';
 import { AuthService, BirthdateService } from '@services';
 
 @Controller('api/v1/birthdate')
@@ -14,7 +13,6 @@ export class BirthdateController {
     private readonly authService: AuthService,
   ) {}
 
-  @UseGuards(AuthGuard())
   @Post()
   public async insert(
     @Body() birthdateRequest: BirthdayRequestDto,

@@ -14,7 +14,6 @@ export class FullNameController {
     private readonly authService: AuthService,
   ) {}
 
-  // @UseGuards(AuthGuard())
   @Post()
   public async insert(
     @Body() fullNameRequest: FullNameRequestDto,
