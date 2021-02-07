@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { AmountRequestedDto, AmountRequestedResponseDto } from '@dto';
-import { AmountRequestedEntity } from '@entities';
+import { AmountRequestedEntity, UserEntity } from '@entities';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
+import { UserRepository } from '@repositories';
 import { AmountRequestedRepository } from 'src/repositories/amountRequested.repository';
 
 @Injectable()
@@ -11,22 +12,24 @@ export class AmountRequestedService {
   constructor(
     @InjectRepository(AmountRequestedEntity)
     private readonly amountRequestedRepository: AmountRequestedRepository,
+    @InjectRepository(UserEntity)
+    private readonly userRepository: UserRepository,
     private readonly jwtService: JwtService,
   ) {}
 
   async create(
-    userId: string,
+    user: UserEntity,
     value: number,
   ): Promise<AmountRequestedResponseDto> {
-    const newAmountRequested = this.amountRequestedRepository.create({
-      userId,
+    const data = this.amountRequestedRepository.create({
+      user,
       value,
     });
-    await this.amountRequestedRepository.save(newAmountRequested);
+    await this.amountRequestedRepository.save(data);
 
     return {
-      createdAt: newAmountRequested.createdAt,
-      value: newAmountRequested.value,
+      createdAt: data.createdAt,
+      value: data.value,
     };
   }
 
@@ -45,21 +48,18 @@ export class AmountRequestedService {
   async createOrUpdate({
     value,
     token,
-  }: AmountRequestedDto): Promise<AmountRequestedResponseDto[]> {
+  }: AmountRequestedDto): Promise<AmountRequestedResponseDto> {
     const data = await this.jwtService.verifyAsync(token);
+    const user = await this.userRepository.findOneOrFail({ id: data.id });
     const response = await this.amountRequestedRepository.findOne({
-      userId: data.id,
+      user,
       value,
     });
 
     if (response) {
       return await this.update(response.id);
     } else {
-      await this.create(data.id, value);
-      const array = await this.amountRequestedRepository.find({
-        userId: data.id,
-      });
-      return array.map(({ id, userId, ...rest }) => rest);
+      return await this.create(user, value);
     }
   }
 }

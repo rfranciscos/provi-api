@@ -16,7 +16,7 @@ export class AmountRequestedController {
   @Post()
   public async insert(
     @Body() amountRequestedRequest: AmountRequestedDto,
-  ): Promise<HttpResponseProtected<AmountRequestedResponseDto[]>> {
+  ): Promise<HttpResponseProtected<AmountRequestedResponseDto>> {
     await this.authService.getUserPath(
       amountRequestedRequest.token,
       '/api/v1/amount-requested',
