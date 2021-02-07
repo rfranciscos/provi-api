@@ -1,15 +1,17 @@
 import { FullNameRequestDto, FullNameResponseDto } from '@dto';
-import { FullNameEntity } from '@entities';
+import { FullNameEntity, UserEntity } from '@entities';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FullNameRepository } from '@repositories';
+import { FullNameRepository, UserRepository } from '@repositories';
 
 @Injectable()
 export class FullNameService {
   constructor(
     @InjectRepository(FullNameEntity)
     private readonly fullNameRepository: FullNameRepository,
+    @InjectRepository(UserEntity)
+    private readonly userRepository: UserRepository,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -18,8 +20,9 @@ export class FullNameService {
     firstName: string,
     lastName: string,
   ): Promise<FullNameResponseDto> {
+    const user = await this.userRepository.findOneOrFail({ id: userId });
     const data = this.fullNameRepository.create({
-      userId,
+      user,
       firstName,
       lastName,
     });
@@ -57,8 +60,9 @@ export class FullNameService {
     const firstName = fullName.substring(0, firstOccurence);
     const lastName = fullName.substring(firstOccurence + 1);
     const data = await this.jwtService.verifyAsync(token);
+    const user = await this.userRepository.findOneOrFail({ id: data.id });
     const response = await this.fullNameRepository.findOne({
-      userId: data.id,
+      user,
       firstName,
       lastName,
     });
@@ -67,9 +71,7 @@ export class FullNameService {
       return await this.update(response.id);
     } else {
       await this.create(data.id, firstName, lastName);
-      const array = await this.fullNameRepository.find({
-        userId: data.id,
-      });
+      const array = await this.fullNameRepository.find({ user });
       return array.map(({ firstName, lastName, createdAt, updatedAt }) => {
         return {
           firstName,

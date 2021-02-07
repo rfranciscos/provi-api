@@ -3,6 +3,7 @@ import * as bcrypt from 'bcrypt';
 import { BaseDBEntity } from './baseDBEntity';
 import { CPFEntity } from './cpf.entity';
 import { PhoneNumberEntity } from './phoneNumber.entity';
+import { FullNameEntity } from './fullName.entity';
 
 @Entity('User')
 export class UserEntity extends BaseDBEntity {
@@ -17,6 +18,9 @@ export class UserEntity extends BaseDBEntity {
 
   @OneToMany(() => PhoneNumberEntity, (phoneNumber) => phoneNumber.user)
   phoneNumbers: PhoneNumberEntity[];
+
+  @OneToMany(() => FullNameEntity, (fullName) => fullName.user)
+  fullNames: FullNameEntity[];
 
   @BeforeInsert()
   async hashPassword() {
