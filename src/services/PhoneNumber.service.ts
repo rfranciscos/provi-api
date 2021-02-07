@@ -44,14 +44,13 @@ export class PhoneNumberService {
     return { value, updatedAt };
   }
 
-  async createOrUpdate(
-    { value }: PhoneNumberRequestDto,
-    { authorization }: { authorization: string },
-  ): Promise<PhoneNumberResponseDto[]> {
+  async createOrUpdate({
+    value,
+    token,
+  }: PhoneNumberRequestDto): Promise<PhoneNumberResponseDto[]> {
     if (!validadePhoneNumber(value)) {
       throw new HttpException('Invalid phone number', HttpStatus.BAD_REQUEST);
     }
-    const token = authorization.split(' ')[1];
     const data = await this.jwtService.verifyAsync(token);
     const user = await this.userRepository.findOneOrFail({ id: data.id });
     const response = await this.phoneNumberRepo.findOne({

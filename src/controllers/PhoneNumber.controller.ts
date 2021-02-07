@@ -3,7 +3,7 @@ import {
   PhoneNumberRequestDto,
   PhoneNumberResponseDto,
 } from '@dto';
-import { Controller, Body, Post, Headers, UseGuards } from '@nestjs/common';
+import { Controller, Body, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService, PhoneNumberService } from '@services';
 
@@ -18,15 +18,16 @@ export class PhoneNumberController {
   @Post()
   public async insert(
     @Body() phoneNumberRequest: PhoneNumberRequestDto,
-    @Headers() headers: any,
   ): Promise<HttpResponseProtected<PhoneNumberResponseDto[]>> {
-    await this.authService.getUserPath(headers, '/api/v1/phone-number');
+    await this.authService.getUserPath(
+      phoneNumberRequest.token,
+      '/api/v1/phone-number',
+    );
     const response = await this.phoneNumberService.createOrUpdate(
       phoneNumberRequest,
-      headers,
     );
     const nextPath = await this.authService.updatePaths(
-      headers,
+      phoneNumberRequest.token,
       '/api/v1/phone-number',
     );
 
