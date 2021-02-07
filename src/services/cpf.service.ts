@@ -16,32 +16,26 @@ export class CpfService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async create(userId: string, cpf: string): Promise<CpfResponseDto> {
-    const user = await this.userRepository.findOneOrFail({ id: userId });
+  async create(user: UserEntity, cpf: string): Promise<CpfResponseDto> {
     const newCpf = this.cpfRepository.create({ user, value: cpf });
-    await this.cpfRepository.save(newCpf);
-
-    return { value: newCpf.value, createdAt: newCpf.createdAt };
+    return await this.cpfRepository.save(newCpf);
   }
 
-  async update(idCpf: string): Promise<any> {
+  async update(idCpf: string): Promise<CpfResponseDto> {
     await this.cpfRepository.update({ id: idCpf }, { updatedAt: new Date() });
-    const { value, updatedAt } = await this.cpfRepository.findOne({
+    return this.cpfRepository.findOne({
       id: idCpf,
     });
-
-    return { value, updatedAt };
   }
 
-  async createOrUpdate(
-    { value }: CpfRequestDto,
-    { authorization }: { authorization: string },
-  ): Promise<CpfResponseDto[]> {
+  async createOrUpdate({
+    value,
+    token,
+  }: CpfRequestDto): Promise<CpfResponseDto> {
+    const data = await this.jwtService.verifyAsync(token);
     if (!validateCpf(value)) {
       throw new HttpException('This CPF is not valid', HttpStatus.BAD_REQUEST);
     }
-    const token = authorization.split(' ')[1];
-    const data = await this.jwtService.verifyAsync(token);
     const user = await this.userRepository.findOneOrFail({ id: data.id });
     const response = await this.cpfRepository.findOne({
       user,
@@ -49,19 +43,9 @@ export class CpfService {
     });
 
     if (response) {
-      return await this.update(response.id);
+      return this.update(response.id);
     } else {
-      await this.create(data.id, value);
-      const array = await this.cpfRepository.find({
-        user,
-      });
-      return array.map(({ value, createdAt, updatedAt }) => {
-        return {
-          value,
-          createdAt,
-          updatedAt,
-        };
-      });
+      return this.create(user, value);
     }
   }
 }
