@@ -17,7 +17,7 @@ export class FullNameController {
   @Post()
   public async insert(
     @Body() fullNameRequest: FullNameRequestDto,
-  ): Promise<HttpResponseProtected<FullNameResponseDto[]>> {
+  ): Promise<HttpResponseProtected<FullNameResponseDto>> {
     await this.authService.getUserPath(
       fullNameRequest.token,
       '/api/v1/full-name',

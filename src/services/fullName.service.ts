@@ -16,44 +16,32 @@ export class FullNameService {
   ) {}
 
   async create(
-    userId: string,
+    user: UserEntity,
     firstName: string,
     lastName: string,
   ): Promise<FullNameResponseDto> {
-    const user = await this.userRepository.findOneOrFail({ id: userId });
     const data = this.fullNameRepository.create({
       user,
       firstName,
       lastName,
     });
-    await this.fullNameRepository.save(data);
-    return {
-      firstName: data.firstName,
-      lastName: data.lastName,
-      createdAt: data.createdAt,
-    };
+    return this.fullNameRepository.save(data);
   }
 
-  async update(idFullName: string): Promise<any> {
+  async update(idFullName: string): Promise<FullNameResponseDto> {
     await this.fullNameRepository.update(
       { id: idFullName },
       { updatedAt: new Date() },
     );
-    const {
-      firstName,
-      lastName,
-      updatedAt,
-    } = await this.fullNameRepository.findOne({
+    return this.fullNameRepository.findOne({
       id: idFullName,
     });
-
-    return { firstName, lastName, updatedAt };
   }
 
   async createOrUpdate({
     fullName,
     token,
-  }: FullNameRequestDto): Promise<FullNameResponseDto[]> {
+  }: FullNameRequestDto): Promise<FullNameResponseDto> {
     const firstOccurence = fullName.indexOf(' ');
     const firstName = fullName.substring(0, firstOccurence);
     const lastName = fullName.substring(firstOccurence + 1);
@@ -68,16 +56,7 @@ export class FullNameService {
     if (response) {
       return await this.update(response.id);
     } else {
-      await this.create(data.id, firstName, lastName);
-      const array = await this.fullNameRepository.find({ user });
-      return array.map(({ firstName, lastName, createdAt, updatedAt }) => {
-        return {
-          firstName,
-          lastName,
-          createdAt,
-          updatedAt,
-        };
-      });
+      await this.create(user, firstName, lastName);
     }
   }
 }
