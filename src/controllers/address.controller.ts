@@ -3,7 +3,7 @@ import {
   AddressResponseDto,
   HttpResponseProtected,
 } from '@dto';
-import { Controller, Body, Post, Headers, UseGuards } from '@nestjs/common';
+import { Controller, Body, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AddressService, AuthService } from '@services';
 
@@ -18,15 +18,11 @@ export class AddressController {
   @Post()
   public async insert(
     @Body() addressRequest: AddressRequestDto,
-    @Headers() headers: any,
   ): Promise<HttpResponseProtected<AddressResponseDto[]>> {
-    await this.authService.getUserPath(headers, '/api/v1/address');
-    const response = await this.addressService.createOrUpdate(
-      addressRequest,
-      headers,
-    );
+    await this.authService.getUserPath(addressRequest.token, '/api/v1/address');
+    const response = await this.addressService.createOrUpdate(addressRequest);
     const nextPath = await this.authService.updatePaths(
-      headers,
+      addressRequest.token,
       '/api/v1/address',
     );
 

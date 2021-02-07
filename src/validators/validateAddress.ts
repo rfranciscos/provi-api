@@ -1,7 +1,7 @@
-import { AddressRequestDto, CepResponseDto } from '@dto';
+import { Address, CepResponseDto } from '@dto';
 
 export const validateAddress = (
-  address: AddressRequestDto,
+  address: Address,
   apiData: CepResponseDto,
 ): boolean => {
   let status = true;

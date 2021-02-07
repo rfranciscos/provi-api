@@ -1,4 +1,4 @@
-import { AddressRequestDto, CepResponseDto } from '@dto';
+import { CepResponseDto, Address } from '@dto';
 import { Injectable } from '@nestjs/common';
 import { validateAddress } from '@validators';
 import axios from 'axios';
@@ -13,7 +13,7 @@ export class CepService {
     return data;
   }
 
-  async validade(address: AddressRequestDto): Promise<boolean> {
+  async validade(address: Address): Promise<boolean> {
     const apiAddress = await this.get(address.cep);
     return validateAddress(address, apiAddress);
   }

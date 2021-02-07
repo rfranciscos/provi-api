@@ -2,6 +2,10 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
 
 export class AddressRequestDto {
+  @ApiProperty({ type: 'token', example: 'JWT Token' })
+  @IsNotEmpty()
+  token: string;
+
   @ApiProperty({ type: 'string', example: 'Avenida do João' })
   @IsNotEmpty()
   street: string;

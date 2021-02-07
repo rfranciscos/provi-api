@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { AddressRequestDto, AddressResponseDto } from '@dto';
+import { Address, AddressRequestDto, AddressResponseDto } from '@dto';
 import { AddressEntity, UserEntity } from '@entities';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -21,7 +21,7 @@ export class AddressService {
 
   async create(
     userId: string,
-    address: AddressRequestDto,
+    address: Address,
     token: string,
   ): Promise<AddressResponseDto> {
     const user = await this.userRepository.findOneOrFail({ id: userId });
@@ -47,14 +47,13 @@ export class AddressService {
   }
 
   async createOrUpdate(
-    address: AddressRequestDto,
-    { authorization }: { authorization: string },
+    input: AddressRequestDto,
   ): Promise<AddressResponseDto[]> {
+    const { token, ...address } = input;
     const isValid = await this.cepService.validade(address);
     if (!isValid) {
       throw new HttpException('inconsistent address', HttpStatus.BAD_REQUEST);
     }
-    const token = authorization.split(' ')[1];
     const data = await this.jwtService.verifyAsync(token);
     const user = await this.userRepository.findOneOrFail({ id: data.id });
     const response = await this.addressRepo.findOne({
