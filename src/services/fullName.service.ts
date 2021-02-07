@@ -50,11 +50,10 @@ export class FullNameService {
     return { firstName, lastName, updatedAt };
   }
 
-  async createOrUpdate(
-    { fullName }: FullNameRequestDto,
-    { authorization }: { authorization: string },
-  ): Promise<FullNameResponseDto[]> {
-    const token = authorization.split(' ')[1];
+  async createOrUpdate({
+    fullName,
+    token,
+  }: FullNameRequestDto): Promise<FullNameResponseDto[]> {
     const firstOccurence = fullName.indexOf(' ');
     const firstName = fullName.substring(0, firstOccurence);
     const lastName = fullName.substring(firstOccurence + 1);

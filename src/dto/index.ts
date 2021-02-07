@@ -18,3 +18,4 @@ export * from './cepResponse.dto';
 export * from './httpResponseProtected.dto';
 export * from './AmountRequested.dto';
 export * from './address.interface';
+export * from './request.dto';
