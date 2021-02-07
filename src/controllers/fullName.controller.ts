@@ -4,8 +4,7 @@ import {
   HttpResponseProtected,
 } from '@dto';
 import { Controller, Body, Post } from '@nestjs/common';
-import { AuthService } from '@services';
-import { FullNameService } from 'src/services/fullName.service';
+import { AuthService, FullNameService } from '@services';
 
 @Controller('api/v1/full-name')
 export class FullNameController {

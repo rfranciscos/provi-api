@@ -43,7 +43,7 @@ export class UserService {
     return { id: user.id, email: user.email };
   }
 
-  async create(input: UserRequestDto): Promise<UserResponse> {
+  async create(input: UserRequestDto, inputPaths: any): Promise<UserResponse> {
     const userInDb = await this.userRepository.findOne({
       where: { email: input.email },
     });
@@ -56,7 +56,7 @@ export class UserService {
       email: input.email,
     });
     await this.userRepository.save(user);
-    const paths = input.paths.map((item) =>
+    const paths = inputPaths.map((item) =>
       this.userPathRepository.create({ ...item, user }),
     );
     await this.userPathRepository.save(paths);

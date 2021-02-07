@@ -7,3 +7,4 @@ export * from './birthdate.service';
 export * from './PhoneNumber.service';
 export * from './address.service';
 export * from './amountRequested.service';
+export * from './cep.service';

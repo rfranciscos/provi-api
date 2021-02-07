@@ -21,7 +21,7 @@ export class AuthService {
     userRequest: UserCredentialsDto,
     paths: RouterList[],
   ): Promise<JwtToken> {
-    const user = await this.usersService.create({ ...userRequest, paths });
+    const user = await this.usersService.create(userRequest, paths);
     return this.createToken(user);
   }
 

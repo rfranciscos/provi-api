@@ -5,3 +5,4 @@ export * from './birthdate.repository';
 export * from './phoneNumber.repository';
 export * from './address.repository';
 export * from './userPath.repository';
+export * from './amountRequested.repository';

@@ -1,7 +1,7 @@
 import { HttpResponse, JwtToken, UserRequestDto } from '@dto';
 import { Controller, Body, Post, Request } from '@nestjs/common';
 import { AuthService } from '@services';
-import { getRouterList } from 'src/helpers';
+import { getRouterList } from '@helpers';
 
 @Controller('api/v1/auth')
 export class AuthController {

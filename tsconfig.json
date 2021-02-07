@@ -20,7 +20,8 @@
       "@services": ["src/services"],
       "@config": ["src/config"],
       "@dto": ["src/dto"],
-      "@validators": ["src/validators"]
+      "@validators": ["src/validators"],
+      "@helpers": ["src/helpers"]
     }
   }
 }

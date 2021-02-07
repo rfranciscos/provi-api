@@ -2,8 +2,20 @@
   "moduleFileExtensions": ["js", "json", "ts"],
   "rootDir": ".",
   "testEnvironment": "node",
-  "testRegex": ".e2e-spec.ts$",
+  "testRegex": ".test.ts$",
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
+  },
+  "moduleNameMapper": {
+    "@controller": "<rootDir>/../src/controllers",
+    "@entities": "<rootDir>/../src/entities",
+    "@modules": "<rootDir>/../src/modules",
+    "@repositories": "<rootDir>/../src/repositories",
+    "@services": "<rootDir>/../src/services",
+    "@config": "<rootDir>/../src/config",
+    "@dto": "<rootDir>/../src/dto",
+    "@validators": "<rootDir>/../src/validators",
+    "@helpers": "<rootDir>/../src/helpers",
+    "src/jwt/jwt.strategy": "<rootDir>/../src/jwt/jwt.strategy"
   }
 }

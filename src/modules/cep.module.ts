@@ -1,6 +1,6 @@
 import { HttpModule, Module } from '@nestjs/common';
-import { CepService } from 'src/services/CEP.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { CepService } from '@services';
 
 @Module({
   imports: [ConfigModule, HttpModule],

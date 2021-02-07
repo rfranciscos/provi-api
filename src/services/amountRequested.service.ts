@@ -4,8 +4,7 @@ import { AmountRequestedEntity, UserEntity } from '@entities';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserRepository } from '@repositories';
-import { AmountRequestedRepository } from 'src/repositories/amountRequested.repository';
+import { AmountRequestedRepository, UserRepository } from '@repositories';
 
 @Injectable()
 export class AmountRequestedService {

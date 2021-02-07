@@ -10,6 +10,4 @@ export class UserRequestDto {
   @ApiProperty({ type: 'string', example: 'AcrediteNoCodigo' })
   @IsNotEmpty()
   password: string;
-
-  paths: { path: string; nextPath: string }[];
 }
