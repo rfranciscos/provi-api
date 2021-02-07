@@ -1,10 +1,12 @@
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { BaseDBEntity } from './baseDBEntity';
+import { UserEntity } from './user.entity';
 
 @Entity('AmountRequested')
 export class AmountRequestedEntity extends BaseDBEntity {
-  @Column({ type: 'uuid', nullable: false })
-  userId: string;
+  @ManyToOne(() => UserEntity, (user) => user)
+  @JoinColumn({ name: 'userId' })
+  user: UserEntity;
 
   @Column({ type: 'numeric', nullable: false })
   value: number;

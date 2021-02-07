@@ -34,6 +34,9 @@ export class UserEntity extends BaseDBEntity {
   @OneToMany(() => UserPathEntity, (path) => path.user)
   paths: UserPathEntity[];
 
+  @OneToMany(() => UserPathEntity, (path) => path.user)
+  totalRequested: UserPathEntity[];
+
   @BeforeInsert()
   async hashPassword() {
     this.password = await bcrypt.hash(this.password, 10);
