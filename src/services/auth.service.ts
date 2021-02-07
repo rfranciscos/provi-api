@@ -56,7 +56,7 @@ export class AuthService {
       (a, b) =>
         new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime(),
     );
-    if (paths[0].nextPath !== currentPath) {
+    if (paths[0].path !== currentPath && paths[0].nextPath !== currentPath) {
       throw new HttpException(
         `Invalid endPoint - ${paths[0].nextPath}`,
         HttpStatus.BAD_REQUEST,
