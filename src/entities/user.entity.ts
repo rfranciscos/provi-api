@@ -5,6 +5,7 @@ import { CPFEntity } from './cpf.entity';
 import { PhoneNumberEntity } from './phoneNumber.entity';
 import { FullNameEntity } from './fullName.entity';
 import { BirthdateEntity } from './birthdate.entity';
+import { AddressEntity } from './address.entity';
 
 @Entity('User')
 export class UserEntity extends BaseDBEntity {
@@ -25,6 +26,9 @@ export class UserEntity extends BaseDBEntity {
 
   @OneToMany(() => BirthdateEntity, (birthdate) => birthdate.user)
   birthdates: BirthdateEntity[];
+
+  @OneToMany(() => AddressEntity, (address) => address.user)
+  addresses: BirthdateEntity[];
 
   @BeforeInsert()
   async hashPassword() {

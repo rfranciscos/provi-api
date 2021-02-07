@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { AddressRequestDto, AddressResponseDto } from '@dto';
-import { AddressEntity } from '@entities';
+import { AddressEntity, UserEntity } from '@entities';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
+import { UserRepository } from '@repositories';
 import { Repository } from 'typeorm';
 import { CepService } from './CEP.service';
 
@@ -12,6 +13,8 @@ export class AddressService {
   constructor(
     @InjectRepository(AddressEntity)
     private readonly addressRepo: Repository<AddressEntity>,
+    @InjectRepository(UserEntity)
+    private readonly userRepository: UserRepository,
     private readonly jwtService: JwtService,
     private readonly cepService: CepService,
   ) {}
@@ -21,7 +24,8 @@ export class AddressService {
     address: AddressRequestDto,
     token: string,
   ): Promise<AddressResponseDto> {
-    const newAddress = this.addressRepo.create({ userId, ...address });
+    const user = await this.userRepository.findOneOrFail({ id: userId });
+    const newAddress = this.addressRepo.create({ user, ...address });
     await this.addressRepo.save(newAddress);
 
     return { token, createdAt: newAddress.createdAt, ...address };
@@ -33,7 +37,7 @@ export class AddressService {
       updatedAt,
       createdAt,
       id,
-      userId,
+      user,
       ...address
     } = await this.addressRepo.findOne({
       id: idAddress,
@@ -52,8 +56,9 @@ export class AddressService {
     }
     const token = authorization.split(' ')[1];
     const data = await this.jwtService.verifyAsync(token);
+    const user = await this.userRepository.findOneOrFail({ id: data.id });
     const response = await this.addressRepo.findOne({
-      userId: data.id,
+      user,
       ...address,
     });
 
@@ -62,9 +67,9 @@ export class AddressService {
     } else {
       await this.create(data.id, address, token);
       const array = await this.addressRepo.find({
-        userId: data.id,
+        user,
       });
-      return array.map(({ id, userId, ...rest }) => rest);
+      return array.map(({ id, user, ...rest }) => rest);
     }
   }
 }

@@ -1,5 +1,5 @@
 import { AddressController } from '@controllers';
-import { AddressEntity } from '@entities';
+import { AddressEntity, UserEntity } from '@entities';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AddressService } from '@services';
@@ -12,7 +12,7 @@ import { UserModule } from './user.module';
     UserModule,
     AuthModule,
     CepModule,
-    TypeOrmModule.forFeature([AddressEntity]),
+    TypeOrmModule.forFeature([AddressEntity, UserEntity]),
   ],
   controllers: [AddressController],
   providers: [AddressService],

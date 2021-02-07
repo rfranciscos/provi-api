@@ -1,9 +1,10 @@
-import { Column, Entity, Unique } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, Unique } from 'typeorm';
 import { BaseDBEntity } from './baseDBEntity';
+import { UserEntity } from './user.entity';
 
 @Entity('Address')
 @Unique('Address_userId_address_key', [
-  'userId',
+  'user',
   'street',
   'number',
   'complement',
@@ -12,8 +13,9 @@ import { BaseDBEntity } from './baseDBEntity';
   'cep',
 ])
 export class AddressEntity extends BaseDBEntity {
-  @Column({ type: 'uuid', nullable: false })
-  userId!: string;
+  @ManyToOne(() => UserEntity, (user) => user)
+  @JoinColumn({ name: 'userId' })
+  user: UserEntity;
 
   @Column({ type: 'text', nullable: false })
   street!: string;
