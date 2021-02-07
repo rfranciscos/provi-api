@@ -1,5 +1,5 @@
 import { PhoneNumberController } from '@controllers';
-import { PhoneNumberEntity } from '@entities';
+import { PhoneNumberEntity, UserEntity } from '@entities';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PhoneNumberService } from '@services';
@@ -10,7 +10,7 @@ import { UserModule } from './user.module';
   imports: [
     UserModule,
     AuthModule,
-    TypeOrmModule.forFeature([PhoneNumberEntity]),
+    TypeOrmModule.forFeature([PhoneNumberEntity, UserEntity]),
   ],
   controllers: [PhoneNumberController],
   providers: [PhoneNumberService],

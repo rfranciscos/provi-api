@@ -1,5 +1,5 @@
 import { PhoneNumberRequestDto, PhoneNumberResponseDto } from '@dto';
-import { PhoneNumberEntity } from '@entities';
+import { PhoneNumberEntity, UserEntity } from '@entities';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -11,6 +11,8 @@ export class PhoneNumberService {
   constructor(
     @InjectRepository(PhoneNumberEntity)
     private readonly phoneNumberRepo: Repository<PhoneNumberEntity>,
+    @InjectRepository(UserEntity)
+    private readonly userRepository: Repository<UserEntity>,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -19,7 +21,8 @@ export class PhoneNumberService {
     value: string,
     token: string,
   ): Promise<PhoneNumberResponseDto> {
-    const data = this.phoneNumberRepo.create({ userId, value });
+    const user = await this.userRepository.findOneOrFail({ id: userId });
+    const data = this.phoneNumberRepo.create({ user, value });
     await this.phoneNumberRepo.save(data);
 
     return {
@@ -50,8 +53,9 @@ export class PhoneNumberService {
     }
     const token = authorization.split(' ')[1];
     const data = await this.jwtService.verifyAsync(token);
+    const user = await this.userRepository.findOneOrFail({ id: data.id });
     const response = await this.phoneNumberRepo.findOne({
-      userId: data.id,
+      user,
       value,
     });
 
@@ -60,7 +64,7 @@ export class PhoneNumberService {
     } else {
       await this.create(data.id, value, token);
       const array = await this.phoneNumberRepo.find({
-        userId: data.id,
+        user,
       });
       return array.map(({ value, createdAt, updatedAt }) => {
         return {

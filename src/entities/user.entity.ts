@@ -2,6 +2,7 @@ import { Entity, Column, BeforeInsert, OneToMany } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { BaseDBEntity } from './baseDBEntity';
 import { CPFEntity } from './cpf.entity';
+import { PhoneNumberEntity } from './phoneNumber.entity';
 
 @Entity('User')
 export class UserEntity extends BaseDBEntity {
@@ -13,6 +14,9 @@ export class UserEntity extends BaseDBEntity {
 
   @OneToMany(() => CPFEntity, (cpf) => cpf.user)
   cpfs: CPFEntity[];
+
+  @OneToMany(() => PhoneNumberEntity, (phoneNumber) => phoneNumber.user)
+  phoneNumbers: PhoneNumberEntity[];
 
   @BeforeInsert()
   async hashPassword() {
