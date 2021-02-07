@@ -16,7 +16,7 @@ export class AddressController {
   @Post()
   public async insert(
     @Body() addressRequest: AddressRequestDto,
-  ): Promise<HttpResponseProtected<AddressResponseDto[]>> {
+  ): Promise<HttpResponseProtected<AddressResponseDto>> {
     await this.authService.getUserPath(addressRequest.token, '/api/v1/address');
     const response = await this.addressService.createOrUpdate(addressRequest);
     const nextPath = await this.authService.updatePaths(

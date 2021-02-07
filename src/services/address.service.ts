@@ -20,41 +20,27 @@ export class AddressService {
   ) {}
 
   async create(
-    userId: string,
+    user: UserEntity,
     address: Address,
-    token: string,
   ): Promise<AddressResponseDto> {
-    const user = await this.userRepository.findOneOrFail({ id: userId });
     const newAddress = this.addressRepo.create({ user, ...address });
-    await this.addressRepo.save(newAddress);
-
-    return { token, createdAt: newAddress.createdAt, ...address };
+    return this.addressRepo.save(newAddress);
   }
 
-  async update(idAddress: string): Promise<any> {
+  async update(idAddress: string): Promise<AddressResponseDto> {
     await this.addressRepo.update({ id: idAddress }, { updatedAt: new Date() });
-    const {
-      updatedAt,
-      createdAt,
-      id,
-      user,
-      ...address
-    } = await this.addressRepo.findOne({
+    return await this.addressRepo.findOne({
       id: idAddress,
     });
-
-    return { ...address, updatedAt };
   }
 
-  async createOrUpdate(
-    input: AddressRequestDto,
-  ): Promise<AddressResponseDto[]> {
+  async createOrUpdate(input: AddressRequestDto): Promise<AddressResponseDto> {
     const { token, ...address } = input;
+    const data = await this.jwtService.verifyAsync(token);
     const isValid = await this.cepService.validade(address);
     if (!isValid) {
       throw new HttpException('inconsistent address', HttpStatus.BAD_REQUEST);
     }
-    const data = await this.jwtService.verifyAsync(token);
     const user = await this.userRepository.findOneOrFail({ id: data.id });
     const response = await this.addressRepo.findOne({
       user,
@@ -64,11 +50,7 @@ export class AddressService {
     if (response) {
       return await this.update(response.id);
     } else {
-      await this.create(data.id, address, token);
-      const array = await this.addressRepo.find({
-        user,
-      });
-      return array.map(({ id, user, ...rest }) => rest);
+      return await this.create(user, address);
     }
   }
 }
