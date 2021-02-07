@@ -1,4 +1,11 @@
-import { Column, Entity, JoinColumn, ManyToOne, Unique } from 'typeorm';
+import {
+  BeforeInsert,
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  Unique,
+} from 'typeorm';
 import { BaseDBEntity } from './baseDBEntity';
 import { UserEntity } from './user.entity';
 
@@ -11,4 +18,9 @@ export class PhoneNumberEntity extends BaseDBEntity {
 
   @Column({ type: 'text', nullable: false })
   value: string;
+
+  @BeforeInsert()
+  sanitizePhoneNumber() {
+    this.value = this.value.replace(/[^\d]/g, '');
+  }
 }
