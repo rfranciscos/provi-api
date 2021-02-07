@@ -3,8 +3,7 @@ import {
   FullNameResponseDto,
   HttpResponseProtected,
 } from '@dto';
-import { Controller, Body, Post, UseGuards } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
+import { Controller, Body, Post } from '@nestjs/common';
 import { AuthService } from '@services';
 import { FullNameService } from 'src/services/fullName.service';
 
@@ -15,7 +14,7 @@ export class FullNameController {
     private readonly authService: AuthService,
   ) {}
 
-  @UseGuards(AuthGuard())
+  // @UseGuards(AuthGuard())
   @Post()
   public async insert(
     @Body() fullNameRequest: FullNameRequestDto,

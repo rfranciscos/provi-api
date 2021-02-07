@@ -49,9 +49,8 @@ export class AuthService {
     };
   }
 
-  async getUserPath(headers: any, currentPath: string): Promise<void> {
-    const token = headers.authorization.split(' ')[1];
-    const data = await this.jwtService.verifyAsync(token);
+  async getUserPath(jwtToken: string, currentPath: string): Promise<void> {
+    const data = await this.jwtService.verifyAsync(jwtToken);
     const paths = await this.usersService.getPaths(data.id);
     paths.sort(
       (a, b) =>
@@ -65,9 +64,8 @@ export class AuthService {
     }
   }
 
-  async updatePaths(headers: any, currentPath: string) {
-    const token = headers.authorization.split(' ')[1];
-    const data = await this.jwtService.verifyAsync(token);
+  async updatePaths(jwtToken: string, currentPath: string) {
+    const data = await this.jwtService.verifyAsync(jwtToken);
     const path = await this.usersService.updatePath(currentPath, data.id);
     return path;
   }
