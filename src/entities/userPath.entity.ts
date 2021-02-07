@@ -5,7 +5,7 @@ import { UserEntity } from './user.entity';
 @Entity('UserPath')
 @Unique('UserPath_userId_path_key', ['user', 'path'])
 export class UserPathEntity extends BaseDBEntity {
-  @ManyToOne(() => UserEntity, (user) => user)
+  @ManyToOne(() => UserEntity, (user) => user, { cascade: true })
   @JoinColumn({ name: 'userId' })
   user: UserEntity;
 
