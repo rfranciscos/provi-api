@@ -1,28 +1,27 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiResponseProperty } from '@nestjs/swagger';
 
 export class AddressResponseDto {
-  @ApiProperty()
-  token?: string;
-
-  @ApiProperty()
+  @ApiResponseProperty()
   street: string;
 
-  @ApiProperty()
+  @ApiResponseProperty()
   number: string;
 
-  @ApiProperty()
+  @ApiResponseProperty()
   complement?: string;
+
+  @ApiResponseProperty()
   city: string;
 
-  @ApiProperty()
+  @ApiResponseProperty()
   state: string;
 
-  @ApiProperty()
+  @ApiResponseProperty()
   cep: string;
 
-  @ApiProperty()
+  @ApiResponseProperty()
   createdAt?: Date;
 
-  @ApiProperty()
+  @ApiResponseProperty()
   updatedAt?: Date;
 }

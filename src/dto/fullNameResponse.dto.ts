@@ -1,15 +1,15 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiResponseProperty } from '@nestjs/swagger';
 
 export class FullNameResponseDto {
-  @ApiProperty()
+  @ApiResponseProperty()
   firstName: string;
 
-  @ApiProperty()
+  @ApiResponseProperty()
   lastName: string;
 
-  @ApiProperty()
+  @ApiResponseProperty()
   createdAt?: Date;
 
-  @ApiProperty()
+  @ApiResponseProperty()
   updatedAt?: Date;
 }

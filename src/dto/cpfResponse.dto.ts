@@ -1,12 +1,12 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiResponseProperty } from '@nestjs/swagger';
 
 export class CpfResponseDto {
-  @ApiProperty()
+  @ApiResponseProperty()
   value: string;
 
-  @ApiProperty()
+  @ApiResponseProperty()
   createdAt?: Date;
 
-  @ApiProperty()
+  @ApiResponseProperty()
   updatedAt?: Date;
 }

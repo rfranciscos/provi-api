@@ -1,12 +1,12 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiResponseProperty } from '@nestjs/swagger';
 
 export class HttpResponse<T> {
-  @ApiProperty()
+  @ApiResponseProperty()
   sucess: boolean;
 
-  @ApiProperty()
+  @ApiResponseProperty()
   message: string;
 
-  @ApiProperty()
+  @ApiResponseProperty()
   data: T;
 }

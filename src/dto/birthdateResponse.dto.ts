@@ -1,12 +1,12 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiResponseProperty } from '@nestjs/swagger';
 
 export class BirthdateResponseDto {
-  @ApiProperty()
+  @ApiResponseProperty()
   value: Date;
 
-  @ApiProperty()
+  @ApiResponseProperty()
   createdAt?: Date;
 
-  @ApiProperty()
+  @ApiResponseProperty()
   updatedAt?: Date;
 }

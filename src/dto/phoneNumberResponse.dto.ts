@@ -1,15 +1,12 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiResponseProperty } from '@nestjs/swagger';
 
 export class PhoneNumberResponseDto {
-  @ApiProperty()
-  token?: string;
-
-  @ApiProperty()
+  @ApiResponseProperty()
   value: string;
 
-  @ApiProperty()
+  @ApiResponseProperty()
   createdAt?: Date;
 
-  @ApiProperty()
+  @ApiResponseProperty()
   updatedAt?: Date;
 }

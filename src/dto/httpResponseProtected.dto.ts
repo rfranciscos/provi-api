@@ -1,12 +1,12 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiResponseProperty } from '@nestjs/swagger';
 
 export class HttpResponseProtected<T> {
-  @ApiProperty()
+  @ApiResponseProperty()
   message: string;
 
-  @ApiProperty()
+  @ApiResponseProperty()
   'next-end-point': string;
 
-  @ApiProperty()
+  @ApiResponseProperty()
   data: T;
 }

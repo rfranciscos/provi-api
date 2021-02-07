@@ -1,14 +1,14 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiResponseProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
 
 export class AmountRequestedResponseDto {
-  @ApiProperty({ type: 'number', example: '1000.23' })
+  @ApiResponseProperty()
   @IsNotEmpty()
   value: number;
 
-  @ApiProperty()
+  @ApiResponseProperty()
   createdAt?: Date;
 
-  @ApiProperty()
+  @ApiResponseProperty()
   updatedAt?: Date;
 }
