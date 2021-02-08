@@ -32,6 +32,13 @@
 $ npm install
 ```
 
+## Config
+
+```bash
+#criar cópia do arquivo ormconfig.json.template
+#criar cópia do arquivo env/.env.template
+```
+
 ## Setup
 
 ```bash
