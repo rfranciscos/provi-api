@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { FullNameRequestDto, FullNameResponseDto } from '@dto';
 import { FullNameEntity, UserEntity } from '@entities';
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FullNameRepository, UserRepository } from '@repositories';
+import { validadeFullName } from '@validators';
 
 @Injectable()
 export class FullNameService {
@@ -45,9 +46,21 @@ export class FullNameService {
     fullName,
     token,
   }: FullNameRequestDto): Promise<FullNameResponseDto> {
+    if (validadeFullName(fullName)) {
+      throw new HttpException(
+        'This full name is not valid',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
     const firstOccurence = fullName.indexOf(' ');
-    const firstName = fullName.substring(0, firstOccurence);
-    const lastName = fullName.substring(firstOccurence + 1);
+    let firstName = '';
+    let lastName = '';
+    if (firstOccurence === -1) {
+      firstName = fullName;
+    } else {
+      firstName = fullName.substring(0, firstOccurence);
+      lastName = fullName.substring(firstOccurence + 1);
+    }
     const data = await this.jwtService.verifyAsync(token);
     const user = await this.userRepository.findOneOrFail({ id: data.id });
     const response = await this.fullNameRepository.findOne({
@@ -57,9 +70,9 @@ export class FullNameService {
     });
 
     if (response) {
-      return await this.update(response.id);
+      return this.update(response.id);
     } else {
-      await this.create(user, firstName, lastName);
+      return this.create(user, firstName, lastName);
     }
   }
 }

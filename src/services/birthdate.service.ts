@@ -45,7 +45,7 @@ export class BirthdateService {
     const user = await this.userRepository.findOneOrFail({ id: data.id });
     const response = await this.birthdateRepository.findOne({
       user,
-      value,
+      value: new Date(value),
     });
 
     if (response) {

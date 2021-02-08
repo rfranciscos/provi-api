@@ -48,7 +48,7 @@ export class PhoneNumberService {
     const user = await this.userRepository.findOneOrFail({ id: data.id });
     const response = await this.phoneNumberRepo.findOne({
       user,
-      value,
+      value: value.replace(/[^\d]/g, ''),
     });
 
     if (response) {
