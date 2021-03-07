@@ -11,5 +11,5 @@ jobs:
       uses: danger/danger-js@9.1.6
       with:
       args: "--dangerfile provi-api/dangerfile.ts"
-# env:
-# GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+## env:
+## GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
