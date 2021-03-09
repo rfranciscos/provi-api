@@ -36,6 +36,7 @@
     "class-transformer": "^0.3.2",
     "class-validator": "^0.13.1",
     "danger": "^10.6.3",
+    "danger-plugin-slack": "^1.1.2",
     "dotenv": "^8.2.0",
     "express-rate-limit": "^5.2.3",
     "fastify-swagger": "^4.1.1",
