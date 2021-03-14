@@ -48,20 +48,31 @@ if (lockfileChanged) {
  * Rule: dependency version must be static
  * Reason: Mitigate bugs
  */
+// schedule(async () => {
+//   const packageDiff = await danger.git.JSONDiffForFile('package.json');
+//   console.log('bateu', packageDiff.dependencies);
+//   if (packageDiff.dependencies) {
+//     const newDependencies = packageDiff.dependencies.added;
+//     if (_.includes(newDependencies,'^')) {
+//       fail(
+//         `🕵 Hey doc! the dependency version must be static - (${newDependencies.join(
+//           '',
+//         )})`,
+//       );
+//     }
+//   }
+// });
+
 schedule(async () => {
-  const packageDiff = await danger.git.JSONDiffForFile('package.json');
-  console.log('bateu', packageDiff.dependencies);
+  const packageDiff = await danger.git.JSONDiffForFile("package.json")
   if (packageDiff.dependencies) {
-    const newDependencies = packageDiff.dependencies.added;
-    if (_.includes(newDependencies,'^')) {
-      fail(
-        `🕵 Hey doc! the dependency version must be static - (${newDependencies.join(
-          '',
-        )})`,
-      );
-    }
+      const newDependencies = packageDiff.dependencies.added
+      console.log('veio:', newDependencies);
+      if (_.includes(newDependencies, 'jest')) {
+        fail(`🕵 Hey doc! the dependency version must be static`)
+      }
   }
-});
+})
 
 /**
  * Rule: All commits must have (feat/fix/major/chore) as a prefix
