@@ -5,7 +5,7 @@
  * 1) Rules that require or suggest changes to the code, the PR, etc.
  * 2) Rules that celebrate achievements
  */
-import { danger, fail, message, warn } from 'danger';
+import { danger, fail, message, warn, schedule } from 'danger';
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 /* ~ Required or suggested changes                                          ~ */
@@ -43,6 +43,25 @@ if (lockfileChanged) {
     "👀 This project don't accept package-lock file. Please, remove file and try again",
   );
 }
+
+/**
+ * Rule: dependency version must be static
+ * Reason: Mitigate bugs
+ */
+schedule(async () => {
+  const packageDiff = await danger.git.JSONDiffForFile('package.json');
+
+  if (packageDiff.dependencies) {
+    const newDependencies = packageDiff.dependencies.added;
+    if (newDependencies.includes('^')) {
+      fail(
+        `🕵 Hey doc! the dependency version must be static - (${newDependencies.join(
+          '',
+        )})`,
+      );
+    }
+  }
+});
 
 /**
  * Rule: All commits must have (feat/fix/major/chore) as a prefix
