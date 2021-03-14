@@ -52,6 +52,7 @@ schedule(async () => {
   const packageDiff = await danger.git.JSONDiffForFile('package.json');
   if (packageDiff.dependencies) {
     const dependencies = Object.values(packageDiff.dependencies.after);
+    console.log(dependencies);
     if (_.includes(dependencies,'^')) {
       fail(
         `🕵 Hey doc! the dependency version must be static.`,
