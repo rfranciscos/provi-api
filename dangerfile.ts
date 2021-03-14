@@ -50,7 +50,7 @@ if (lockfileChanged) {
  */
 schedule(async () => {
   const packageDiff = await danger.git.JSONDiffForFile('package.json');
-  console.log(packageDiff.dependencies);
+  console.log('bateu', packageDiff.dependencies);
   if (packageDiff.dependencies) {
     const newDependencies = packageDiff.dependencies.added;
     if (newDependencies.includes('^')) {
