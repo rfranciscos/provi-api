@@ -6,7 +6,7 @@
  * 2) Rules that celebrate achievements
  */
 import { danger, fail, message, warn, schedule } from 'danger';
-
+import includes from "lodash.includes"
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 /* ~ Required or suggested changes                                          ~ */
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
@@ -37,7 +37,7 @@ if (danger.github.pr.additions + danger.github.pr.deletions > bigPRThreshold) {
  * Reason: Always use package.json as a reference
  */
 console.log(danger.git.modified_files);
-const lockfileChanged = danger.git.modified_files.includes('package-lock.json');
+const lockfileChanged = includes(danger.git.modified_files, 'package-lock.json');
 if (lockfileChanged) {
   fail(
     "👀 This project don't accept package-lock file. Please, remove file and try again",
@@ -53,7 +53,7 @@ schedule(async () => {
   console.log('bateu', packageDiff.dependencies);
   if (packageDiff.dependencies) {
     const newDependencies = packageDiff.dependencies.added;
-    if (newDependencies.includes('^')) {
+    if (includes(newDependencies,'^')) {
       fail(
         `🕵 Hey doc! the dependency version must be static - (${newDependencies.join(
           '',
