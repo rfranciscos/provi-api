@@ -1,41 +1,68 @@
-import { danger, warn, fail } from 'danger';
-import slack from 'danger-plugin-slack'
-// Setup
-const pr = danger.github.pr;
+/**
+ * BEFORE EDITING THIS FILE, PLEASE READ http://danger.systems/js/usage/culture.html
+ *
+ * This file is split into two parts:
+ * 1) Rules that require or suggest changes to the code, the PR, etc.
+ * 2) Rules that celebrate achievements
+ */
+import { danger, fail, message, warn } from 'danger';
 
-// Check for description
-const checkDescription = () => {
-  if (pr.body.length < 10) {
-    fail('This pull request needs a description.');
-  }
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/* ~ Required or suggested changes                                          ~ */
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+/**
+ * Rule: It is necessary to have at least 2 reviewers.
+ */
+const reviewersCount = danger.github.requested_reviewers.users.length;
+if (reviewersCount === 0) {
+  fail(`🕵 Whoops, I don't see any reviewers. Remember to add two.`);
+} else if (reviewersCount >= 2) {
+  message(`It's great to have ${reviewersCount} reviewers.`);
 }
 
-// Warn when there is a big PR
-const checkPRSize = () => {
-  const bigPRThreshold = 500;
-  if (pr.additions + pr.deletions > bigPRThreshold) {
-    warn(':exclamation: Big PR');
-  }
+/**
+ * Rule: The number of changes must be less than 1000.
+ * Reason: To make review more easy
+ */
+const bigPRThreshold = 1000;
+if (danger.github.pr.additions + danger.github.pr.deletions > bigPRThreshold) {
+  warn(
+    '🤡 Pull Request size seems relatively large. If Pull Request contains multiple changes, split each into separate PR will helps faster, easier review.',
+  );
 }
 
-const modifiedFiles = danger.git.modified_files;
-
-// Number of modified Files
-const numberOfModifiedFiles = modifiedFiles.length;
-
-const slackReport = () => {
-  const options = {
-    webhookUrl: "https://hooks.slack.com/services/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",
-    text: `Novo PR com ${numberOfModifiedFiles} arquivos modificados`, 
-    username: "Bot do PR",
-    iconEmoji: ":sunglasses:",
-    iconUrl: "http://path/custom/icon/url",
-    channel: "#general",
-  }
-  
-  slack(options)
+/**
+ * Rule: Don't commit the package-lock.json file
+ * Reason: Always use package.json as a reference
+ */
+const lockfileChanged = danger.git.modified_files.includes('package-lock.json');
+if (lockfileChanged) {
+  fail(
+    "👀 This project don't accept package-lock file. Please, remove file and try again",
+  );
 }
 
-checkDescription();
-checkPRSize();
-slackReport();
+/**
+ * Rule: All commits must have (feat/fix/major/chore) as a prefix
+ * Reason: Easy searching and reading commit
+ */
+danger.git.commits.forEach((commit) => {
+  if (!commit.message.match(/^(feat:)|(fix:)|(major:)|(chore:)/g)) {
+    fail(`👀 Commit message '${commit.message}' does match the correct format`);
+  }
+});
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+/* ~ Achievemnts                                                            ~ */
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+/**
+ * Rule: Celebrate PRs that remove more code than they add.
+ * Reason: Less is more!
+ */
+if (danger.github.pr.deletions > danger.github.pr.additions) {
+  message(
+    `🥋👏 Great job! I see more lines deleted than added. Thanks for keeping us lean!`,
+  );
+}
