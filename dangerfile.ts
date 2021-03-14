@@ -36,7 +36,6 @@ if (danger.github.pr.additions + danger.github.pr.deletions > bigPRThreshold) {
  * Rule: Don't commit the package-lock.json file
  * Reason: Always use package.json as a reference
  */
-console.log(danger.git.modified_files);
 const lockfileChanged = _.includes(danger.git.modified_files, 'package-lock.json');
 if (lockfileChanged) {
   fail(
@@ -50,10 +49,10 @@ if (lockfileChanged) {
  */
 schedule(async () => {
   const packageDiff = await danger.git.JSONDiffForFile('package.json');
-  console.log('bateu', packageDiff.dependencies);
-  console.log('valores', Object.values(packageDiff.dependencies.after));
   if (packageDiff.dependencies) {
-    const newDependencies = packageDiff.dependencies.added;
+    console.log(packageDiff.dependencies);
+    const newDependencies = packageDiff.dependencies.after;
+    console.log(newDependencies);
     if (_.includes(newDependencies,'^')) {
       fail(
         `🕵 Hey doc! the dependency version must be static - (${newDependencies.join(
