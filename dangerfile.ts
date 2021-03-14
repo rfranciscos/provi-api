@@ -50,12 +50,15 @@ if (lockfileChanged) {
  */
 schedule(async () => {
   const packageDiff = await danger.git.JSONDiffForFile('package.json');
+  console.log('bateu', packageDiff.dependencies);
+  console.log('valores', Object.values(packageDiff.dependencies.after));
   if (packageDiff.dependencies) {
-    const dependencies = Object.values(packageDiff.dependencies.after);
-    console.log(dependencies);
-    if (_.includes(dependencies,'^')) {
+    const newDependencies = packageDiff.dependencies.added;
+    if (_.includes(newDependencies,'^')) {
       fail(
-        `🕵 Hey doc! the dependency version must be static.`,
+        `🕵 Hey doc! the dependency version must be static - (${newDependencies.join(
+          '',
+        )})`,
       );
     }
   }
