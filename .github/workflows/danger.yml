@@ -10,7 +10,7 @@ jobs:
       with:
         node-version: 12.x
     - name: Install dependencies
-      run: npm danger danger-plugin-slack
+      run: npm install danger danger-plugin-slack @slack/client
     - name: Danger
       run: npx danger ci
       env:
