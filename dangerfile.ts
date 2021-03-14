@@ -66,11 +66,14 @@ if (lockfileChanged) {
 schedule(async () => {
   const packageDiff = await danger.git.JSONDiffForFile("package.json")
   if (packageDiff.dependencies) {
-      const newDependencies = packageDiff.dependencies.added
-      console.log('veio:', newDependencies);
-      if (_.includes(newDependencies, 'jest')) {
-        fail(`🕵 Hey doc! the dependency version must be static`)
-      }
+      const newDependenciesObject = packageDiff.dependencies.after
+      const newDevDependenciesObject = packageDiff.devDependencies.after
+      console.log('newDependenciesObject:', Object.values(newDependenciesObject));
+      console.log('newDevDependenciesObject:', Object.values(newDevDependenciesObject));
+
+      // if (_.includes(newDependencies, 'jest')) {
+      //   fail(`🕵 Hey doc! the dependency version must be static`)
+      // }
   }
 })
 
