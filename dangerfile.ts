@@ -36,6 +36,7 @@ if (danger.github.pr.additions + danger.github.pr.deletions > bigPRThreshold) {
  * Rule: Don't commit the package-lock.json file
  * Reason: Always use package.json as a reference
  */
+console.log(danger.git.modified_files);
 const lockfileChanged = danger.git.modified_files.includes('package-lock.json');
 if (lockfileChanged) {
   fail(
