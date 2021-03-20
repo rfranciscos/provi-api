@@ -38,7 +38,7 @@
     "danger": "^10.6.3",
     "danger-plugin-slack": "^1.1.2",
     "dotenv": "^8.2.0",
-    "express-rate-limit": "^5.2.3",
+    "express-rate-limit": "^5.2.6",
     "fastify-swagger": "^4.1.1",
     "helmet": "^4.4.1",
     "i": "^0.3.6",

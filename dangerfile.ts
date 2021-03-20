@@ -36,7 +36,6 @@ if (danger.github.pr.additions + danger.github.pr.deletions > bigPRThreshold) {
  * Rule: Don't commit the package-lock.json file
  * Reason: Always use package.json as a reference
  */
-console.log(danger.git.modified_files);
 const lockfileChanged = _.includes(danger.git.modified_files, 'package-lock.json');
 if (lockfileChanged) {
   fail(
@@ -49,19 +48,20 @@ if (lockfileChanged) {
  * Reason: Mitigate bugs
  */
 schedule(async () => {
-  const packageDiff = await danger.git.JSONDiffForFile('package.json');
-  console.log('bateu', packageDiff.dependencies);
-  if (packageDiff.dependencies) {
-    const newDependencies = packageDiff.dependencies.added;
-    if (_.includes(newDependencies,'^')) {
-      fail(
-        `🕵 Hey doc! the dependency version must be static - (${newDependencies.join(
-          '',
-        )})`,
-      );
+  const packageDiff = await danger.git.JSONDiffForFile("package.json")
+  if (packageDiff.dependencies && packageDiff.dependencies.after) {
+      const newDependenciesObject = Object.values(packageDiff.dependencies.after)
+      if (newDependenciesObject.some(i => /^\^/.test(i))) {
+        fail(`🕵 Hey doc! the dependency version must be static. Check dependencies at package.json`)
+      }
+  }
+  if (packageDiff.devDependencies && packageDiff.devDependencies.after) {
+    const newDevDependenciesObject = Object.values(packageDiff.devDependencies.after)
+    if (newDevDependenciesObject.some(i => /^\^/.test(i))) {
+      fail(`🕵 Hey doc! the dependency version must be static. Check devDependencies at package.json`)
     }
   }
-});
+})
 
 /**
  * Rule: All commits must have (feat/fix/major/chore) as a prefix
@@ -74,7 +74,7 @@ danger.git.commits.forEach((commit) => {
 });
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
-/* ~ Achievemnts                                                            ~ */
+/* ~ Achievements                                                            ~ */
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 /**
